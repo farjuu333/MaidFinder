@@ -1,3 +1,4 @@
+// src/lib/db.ts
 import mongoose from "mongoose";
 
 const connectDB = async () => {
@@ -7,7 +8,7 @@ const connectDB = async () => {
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URI as string);
+    await mongoose.connect(process.env.MONGODB_URL as string);
     console.log("MongoDB Connected Successfully");
   } catch (error) {
     console.error("MongoDB Connection Error:", error);

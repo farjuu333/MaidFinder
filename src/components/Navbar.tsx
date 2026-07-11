@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 "use client";
 
 import { useState } from "react";
@@ -84,12 +83,17 @@ const Navbar = () => {
               >
                 Manage Rooms
               </Link>
-              <button
-                onClick={handleLogout}
-                className="text-sm font-medium text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-full transition"
-              >
-                Logout
-              </button>
+              <div className="flex items-center gap-3 pl-2">
+                <div className="w-9 h-9 bg-rose-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                  {session?.user?.name?.charAt(0) || "U"}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm font-medium text-gray-500 hover:text-rose-500 transition"
+                >
+                  Logout
+                </button>
+              </div>
             </>
           ) : (
             <div className="flex items-center gap-2">

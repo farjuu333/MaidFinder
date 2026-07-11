@@ -89,7 +89,7 @@ const RoomDetailPage = () => {
                 </span>
               </span>
               <span>·</span>
-              <span>📍 {room.location}</span>
+              <span> {room.location}</span>
               <span>·</span>
               <span className="px-3 py-1 bg-gray-100 rounded-full text-xs font-medium text-gray-700">
                 {room.category}

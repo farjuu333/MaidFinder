@@ -1,18 +1,25 @@
+// src/components/Navbar.tsx
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const Navbar = () => {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
+  const { data: session } = authClient.useSession();
+  const isLoggedIn = !!session?.user;
 
-  // Search states
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location, setLocation] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
+
+  const handleLogout = async () => {
+    await authClient.signOut();
+    setMobileMenuOpen(false);
+    router.push("/");
+  };
 
   const handleSearch = () => {
     if (location.trim()) {
@@ -20,7 +27,6 @@ const Navbar = () => {
     } else {
       router.push("/explore");
     }
-    setShowSearch(false);
   };
 
   return (
@@ -31,11 +37,11 @@ const Navbar = () => {
           Dwello
         </Link>
 
-        {/* Center - Search Bar */}
+        {/* Center - Search Bar (Desktop) */}
         <div className="hidden md:flex items-center gap-2">
           <div
             className="flex items-center border border-gray-300 rounded-full py-2 px-4 shadow-sm hover:shadow-md transition cursor-pointer min-w-[300px]"
-            onClick={() => setShowSearch(!showSearch)}
+            onClick={handleSearch}
           >
             <span className="text-sm font-semibold px-2">
               {location || "Anywhere"}
@@ -62,84 +68,29 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Right - Menu */}
-        <div className="flex items-center gap-3 shrink-0">
-          {/* Become a Host */}
-          <Link
-            href="/items/add"
-            className="hidden md:block text-sm font-medium text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-full transition"
-          >
-            Become a Host
-          </Link>
-
-          {/* Language Selector */}
-          <div className="relative hidden md:block">
-            <button
-              onClick={() => setIsLangOpen(!isLangOpen)}
-              className="text-lg hover:bg-gray-100 p-2 rounded-full transition"
-            >
-              🌐
-            </button>
-
-            {isLangOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border py-2 z-50">
-                <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50">
-                  English
-                </button>
-                <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50">
-                  বাংলা
-                </button>
-                <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50">
-                  Español
-                </button>
-              </div>
-            )}
-          </div>
-
+        {/* Right - Desktop Menu */}
+        <div className="hidden md:flex items-center gap-3 shrink-0">
           {isLoggedIn ? (
-            /* User Profile Dropdown */
-            <div className="relative">
-              <button
-                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-2 border border-gray-300 rounded-full p-1 pl-3 hover:shadow-md transition"
+            <>
+              <Link
+                href="/items/add"
+                className="text-sm font-medium text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-full transition"
               >
-                <span className="text-sm">☰</span>
-                <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-white text-sm">
-                  U
-                </div>
+                Become a Host
+              </Link>
+              <Link
+                href="/items/manage"
+                className="text-sm font-medium text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-full transition"
+              >
+                Manage Rooms
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-sm font-medium text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-full transition"
+              >
+                Logout
               </button>
-
-              {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-lg border py-2 z-50">
-                  <div className="px-4 py-2 border-b">
-                    <p className="font-semibold text-sm">John Doe</p>
-                    <p className="text-xs text-gray-500">john@email.com</p>
-                  </div>
-                  <Link
-                    href="/items/manage"
-                    className="block px-4 py-2 text-sm hover:bg-gray-50"
-                  >
-                    📋 Manage Rooms
-                  </Link>
-                  <Link
-                    href="/profile"
-                    className="block px-4 py-2 text-sm hover:bg-gray-50"
-                  >
-                    👤 Profile
-                  </Link>
-                  <hr className="my-1" />
-                  <button
-                    onClick={() => {
-                      setIsLoggedIn(false);
-                      setIsProfileOpen(false);
-                    }}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-500 hover:bg-gray-50"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            </>
           ) : (
             <div className="flex items-center gap-2">
               <Link
@@ -157,34 +108,69 @@ const Navbar = () => {
             </div>
           )}
         </div>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden text-2xl text-gray-700"
+        >
+          {mobileMenuOpen ? "✕" : "☰"}
+        </button>
       </div>
 
-      {/* Mobile Search */}
-      <div className="md:hidden px-4 pb-3">
-        <div className="flex items-center border border-gray-300 rounded-full py-2 px-4">
-          <svg
-            className="w-4 h-4 text-gray-400 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-          <input
-            type="text"
-            placeholder="Where to?"
-            className="w-full text-sm outline-none bg-transparent"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          />
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white border-t px-6 py-6 flex flex-col gap-4 text-base text-gray-700 font-medium">
+          <Link href="/explore" onClick={() => setMobileMenuOpen(false)}>
+            Explore
+          </Link>
+          <Link href="/about" onClick={() => setMobileMenuOpen(false)}>
+            About
+          </Link>
+          <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+            Contact
+          </Link>
+
+          <hr className="border-gray-200" />
+
+          {isLoggedIn ? (
+            <>
+              <Link href="/items/add" onClick={() => setMobileMenuOpen(false)}>
+                Add Room
+              </Link>
+              <Link
+                href="/items/manage"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Manage Rooms
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-left text-rose-500 font-medium"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="border border-gray-300 text-center px-4 py-2 rounded-full"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                className="bg-rose-500 text-white text-center px-4 py-2 rounded-full"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
         </div>
-      </div>
+      )}
     </nav>
   );
 };

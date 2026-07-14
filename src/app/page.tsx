@@ -9,13 +9,14 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 export default function Home() {
   return (
     <div>
-      <Hero />
+      homepage
+      {/* <Hero />
       <PopularDestinations />
       <FeaturedRooms />
       <WhyChooseUs />
       <Statistics/>
       <Testimonials/>
-      <Newsletter/>
+      <Newsletter/> */}
     </div>
   );
 }

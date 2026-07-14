@@ -1,6 +1,7 @@
 import FeaturedRooms from "@/components/FeaturedRooms";
 import Hero from "@/components/Hero";
 import Newsletter from "@/components/Newsletter";
+
 import PopularDestinations from "@/components/PopularDestinations";
 import Statistics from "@/components/Statistics";
 import Testimonials from "@/components/Testimonials";
@@ -10,13 +11,14 @@ export default function Home() {
   return (
     <div>
       homepage
-      {/* <Hero />
+       {/* <Hero />
       <PopularDestinations />
       <FeaturedRooms />
       <WhyChooseUs />
       <Statistics/>
-      <Testimonials/>
-      <Newsletter/> */}
+      <Testimonials/> */}
+      <Newsletter/> 
+      
     </div>
   );
 }

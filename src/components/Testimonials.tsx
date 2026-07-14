@@ -1,63 +1,74 @@
 // src/components/Testimonials.tsx
 
 const testimonials = [
+  
   {
-    id: 1,
-    name: "Sarah Ahmed",
+    id: 4,
+    name: "Rafiq Hasan",
     location: "Dhaka",
-    rating: 5,
-    review:
-      "Absolutely loved my stay! The apartment was clean, modern, and exactly as described. The host was incredibly responsive and helpful throughout my visit.",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-  },
-  {
-    id: 2,
-    name: "Karim Rahman",
-    location: "Chittagong",
-    rating: 5,
-    review:
-      "Best booking experience ever! Found a beautiful beach view villa at an amazing price. Dwello made the entire process so smooth and hassle-free.",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-  },
-  {
-    id: 3,
-    name: "Fatima Begum",
-    location: "Sylhet",
     rating: 4,
     review:
-      "Great platform for finding unique stays. The tea garden cottage I booked was magical. Will definitely use Dwello again for my next trip!",
+      "Great platform for finding reliable maids. The booking system is smooth, and I loved that I could see ratings and reviews before hiring. Will use again!",
     image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+    service: "Cleaning",
+  },
+  {
+    id: 5,
+    name: "Nadia Akter",
+    location: "Rajshahi",
+    rating: 5,
+    review:
+      "MaidFinder is a lifesaver! As a working mom, I needed someone to help with childcare. I found a wonderful nanny here who my kids absolutely love.",
+    image:
+      "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+    service: "Childcare",
+  },
+  {
+    id: 6,
+    name: "Tariq Hossain",
+    location: "Khulna",
+    rating: 5,
+    review:
+      "Found an experienced cook through MaidFinder! She makes delicious meals and is very professional. The whole process from search to hire was seamless.",
+    image:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+    service: "Cooking",
   },
 ];
 
 const Testimonials = () => {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gradient-to-br from-purple-50 via-white to-pink-50">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
+        {/* Section Header - পরিবর্তন করা হয়েছে */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            What Our Guests Say
+          <div className="flex justify-center mb-3">
+            <span className="bg-purple-100 text-purple-600 text-sm font-semibold px-4 py-1.5 rounded-full">
+              ❤️ Trusted by Families
+            </span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            What Our Families Say
           </h2>
-          <p className="text-gray-500">Real reviews from real travelers</p>
+          <p className="text-gray-500 text-base max-w-md mx-auto">
+            Real reviews from families who found their perfect service providers
+          </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Testimonials Grid - ৩ থেকে ৩ কলামে সাজানো */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="bg-white p-6 rounded-xl shadow-sm"
+              className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100"
             >
               {/* Stars */}
-              <div className="flex gap-1 mb-4">
+              <div className="flex gap-1 mb-3">
                 {[...Array(5)].map((_, i) => (
                   <svg
                     key={i}
-                    className={`w-5 h-5 ${i < testimonial.rating ? "text-yellow-400" : "text-gray-300"}`}
+                    className={`w-4 h-4 ${i < testimonial.rating ? "text-yellow-400" : "text-gray-300"}`}
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -66,9 +77,14 @@ const Testimonials = () => {
                 ))}
               </div>
 
+              {/* Service Badge - নতুন */}
+              <span className="inline-block bg-purple-100 text-purple-600 text-xs font-medium px-2.5 py-0.5 rounded-full mb-3">
+                {testimonial.service}
+              </span>
+
               {/* Review Text */}
-              <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                {testimonial.review}
+              <p className="text-gray-600 text-sm leading-relaxed mb-5 line-clamp-4">
+                "{testimonial.review}"
               </p>
 
               {/* User Info */}
@@ -76,7 +92,7 @@ const Testimonials = () => {
                 <img
                   src={testimonial.image}
                   alt={testimonial.name}
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-purple-100"
                 />
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
@@ -89,6 +105,14 @@ const Testimonials = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Trust Badge - নতুন */}
+        <div className="text-center mt-10">
+          <p className="text-sm text-gray-500">
+            ⭐ 4.9/5 Average Rating from{" "}
+            <span className="font-semibold text-gray-700">500+</span> families
+          </p>
         </div>
       </div>
     </section>
